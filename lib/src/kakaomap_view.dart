@@ -53,16 +53,16 @@ class KakaoMapView extends StatelessWidget {
   final String? customOverlay;
 
   /// Marker tap event
-  final void Function(JavascriptMessage)? onTapMarker;
+  final void Function(JavaScriptMessage)? onTapMarker;
 
   /// Zoom change event
-  final void Function(JavascriptMessage)? zoomChanged;
+  final void Function(JavaScriptMessage)? zoomChanged;
 
   /// When user stop moving camera, this event will occur
-  final void Function(JavascriptMessage)? cameraIdle;
+  final void Function(JavaScriptMessage)? cameraIdle;
 
   /// North East, South West lat, lang will be updated when the move event is occurred
-  final void Function(JavascriptMessage)? boundaryUpdate;
+  final void Function(JavaScriptMessage)? boundaryUpdate;
 
   /// [KakaoFigure] is required [KakaoFigure.path] to make polygon.
   /// If null, it won't be enabled
@@ -114,6 +114,11 @@ class KakaoMapView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
+
+
+
     return SizedBox(
       key: mapWidgetKey,
       height: height,
@@ -121,7 +126,7 @@ class KakaoMapView extends StatelessWidget {
       child: WebView(
         initialUrl: (customScript == null) ? _getHTML() : _customScriptHTML(),
         onWebViewCreated: mapController,
-        javascriptMode: JavascriptMode.unrestricted,
+        javascriptMode: JavaScriptMode.unrestricted,
         javascriptChannels: _getChannels,
         debuggingEnabled: true,
         gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
