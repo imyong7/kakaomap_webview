@@ -11,8 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  webview_flutter: ^3.0.2
-  http: ^0.13.4
+  webview_flutter: ^4.0.1
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:
