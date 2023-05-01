@@ -6,6 +6,11 @@ import 'package:kakaomap_webview/src/kakao_figure.dart';
 import 'package:kakaomap_webview/src/kakaomap_type.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+// Import for Android features.
+import 'package:webview_flutter_android/webview_flutter_android.dart';
+// Import for iOS features.
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+
 class KakaoMapView extends StatelessWidget {
   /// Map width. If width is wider than screen size, the map center can be changed
   final double width;
@@ -85,7 +90,8 @@ class KakaoMapView extends StatelessWidget {
   /// You can use js code with controller.
   /// example)
   /// mapController.evaluateJavascript('map.setLevel(map.getLevel() + 1, {animate: true})');
-  final void Function(WebViewController)? mapController;
+  void Function(WebViewController)? mapController;
+  // late final WebViewController mapController;
 
   KakaoMapView(
       {required this.width,
@@ -112,58 +118,100 @@ class KakaoMapView extends StatelessWidget {
       this.mapType,
       this.mapController});
 
+
+
   @override
   Widget build(BuildContext context) {
+    // #docregion platform_features
+    late final PlatformWebViewControllerCreationParams params;
 
+    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
+      params = WebKitWebViewControllerCreationParams(
+        allowsInlineMediaPlayback: true,
+        mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
+      );
+    } else {
+      params = const PlatformWebViewControllerCreationParams();
+    }
 
+    final WebViewController controller = WebViewController.fromPlatformCreationParams(params);
+    // #enddocregion platform_features
 
+    controller
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Color(0x00FFFFFF))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {},
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {},
+          onWebResourceError: (WebResourceError error) {
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            return NavigationDecision.navigate;
+          },
+        ),
+      );
 
+    if (onTapMarker != null) {
+      controller.addJavaScriptChannel('onTapMarker', onMessageReceived: onTapMarker!);
+    }
+
+    if (zoomChanged != null) {
+      controller.addJavaScriptChannel('zoomChanged', onMessageReceived: zoomChanged!);
+    }
+
+    if (cameraIdle != null) {
+      controller.addJavaScriptChannel('cameraIdle', onMessageReceived: cameraIdle!);
+    }
+
+    if (boundaryUpdate != null) {
+      controller.addJavaScriptChannel('boundaryUpdate', onMessageReceived: boundaryUpdate!);
+    }
+
+    String loadHTML = (customScript == null) ? _getHTML() : _customScriptHTML();
 
     return SizedBox(
       key: mapWidgetKey,
       height: height,
       width: width,
-      child: WebView(
-        initialUrl: (customScript == null) ? _getHTML() : _customScriptHTML(),
-        onWebViewCreated: mapController,
-        javascriptMode: JavaScriptMode.unrestricted,
-        javascriptChannels: _getChannels,
-        debuggingEnabled: true,
+      child: WebViewWidget(
+        controller: controller..loadRequest(Uri.parse(loadHTML)),
         gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
           Factory(() => EagerGestureRecognizer()),
         ].toSet(),
       ),
     );
   }
-
-  Set<JavascriptChannel>? get _getChannels {
-    Set<JavascriptChannel>? channels = {};
-    if (onTapMarker != null) {
-      channels.add(JavascriptChannel(
-          name: 'onTapMarker', onMessageReceived: onTapMarker!));
-    }
-
-    if (zoomChanged != null) {
-      channels.add(JavascriptChannel(
-          name: 'zoomChanged', onMessageReceived: zoomChanged!));
-    }
-
-    if (cameraIdle != null) {
-      channels.add(JavascriptChannel(
-          name: 'cameraIdle', onMessageReceived: cameraIdle!));
-    }
-
-    if (boundaryUpdate != null) {
-      channels.add(JavascriptChannel(
-          name: 'boundaryUpdate', onMessageReceived: boundaryUpdate!));
-    }
-
-    if (channels.isEmpty) {
-      return null;
-    }
-
-    return channels;
-  }
+  //
+  // Set<JavascriptChannel>? get _getChannels {
+  //   Set<JavascriptChannel>? channels = {};
+  //   if (onTapMarker != null) {
+  //     channels.add(JavascriptChannel(
+  //         name: 'onTapMarker', onMessageReceived: onTapMarker!));
+  //   }
+  //
+  //   if (zoomChanged != null) {
+  //     channels.add(JavascriptChannel(
+  //         name: 'zoomChanged', onMessageReceived: zoomChanged!));
+  //   }
+  //
+  //   if (cameraIdle != null) {
+  //     channels.add(JavascriptChannel(
+  //         name: 'cameraIdle', onMessageReceived: cameraIdle!));
+  //   }
+  //
+  //   if (boundaryUpdate != null) {
+  //     channels.add(JavascriptChannel(
+  //         name: 'boundaryUpdate', onMessageReceived: boundaryUpdate!));
+  //   }
+  //
+  //   if (channels.isEmpty) {
+  //     return null;
+  //   }
+  //
+  //   return channels;
+  // }
 
   String _getHTML() {
     String markerImageOption = '';

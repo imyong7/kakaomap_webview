@@ -117,7 +117,7 @@ const customOverlay = new kakao.maps.CustomOverlay({
             children: [
               InkWell(
                 onTap: () {
-                  _mapController.runJavascript(
+                  _mapController.runJavaScript(
                       'map.setLevel(map.getLevel() - 1, {animate: true})');
                 },
                 child: CircleAvatar(
@@ -130,7 +130,7 @@ const customOverlay = new kakao.maps.CustomOverlay({
               ),
               InkWell(
                 onTap: () {
-                  _mapController.runJavascript(
+                  _mapController.runJavaScript(
                       'map.setLevel(map.getLevel() + 1, {animate: true})');
                 },
                 child: CircleAvatar(
@@ -148,7 +148,7 @@ const customOverlay = new kakao.maps.CustomOverlay({
             children: [
               InkWell(
                 onTap: () {
-                  _mapController.runJavascript('''
+                  _mapController.runJavaScript('''
       addMarker(new kakao.maps.LatLng($_lat + 0.0003, $_lng + 0.0003));
       
       function addMarker(position) {
