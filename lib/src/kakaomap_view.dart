@@ -171,6 +171,7 @@ class KakaoMapView extends StatelessWidget {
 
     String loadHTML = (customScript == null) ? _getHTML() : _customScriptHTML();
 
+
     return SizedBox(
       key: mapWidgetKey,
       height: height,
