@@ -403,7 +403,7 @@ $overlayStyle
         marker.setMap(map);
         
         kakao.maps.event.addListener(marker, 'click', function(){
-          onTapMarker.postMessage(coord);
+          onTapMarker.postMessage(JSON.stringify(coord));
         });
       });
     }
