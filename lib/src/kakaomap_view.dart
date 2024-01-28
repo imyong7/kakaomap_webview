@@ -29,7 +29,7 @@ class KakaoMapView extends StatelessWidget {
 
   /// marker list
   /// i.e) [{ 'lat': lat, 'lng': lng }]
-  final dynamic markerCoords;
+  final String markerCoords;
 
   /// Kakao map key javascript key
   final String kakaoMapKey;
@@ -390,7 +390,7 @@ $overlayStyle
     
     // marker add
     if(${markerCoords != null}) {
-      const coords = $markerCoords;
+      const coords = JSON.parse($markerCoords);
        
       coords.forEach((coord) => {
         let markerPosition  = new kakao.maps.LatLng(coord['lat']}, coord['lng']);
