@@ -393,7 +393,7 @@ $overlayStyle
       const coords = $markerCoords;
        
       coords['list'].forEach(coord => {
-        let markerPosition  = new kakao.maps.LatLng(coord['lat']}, coord['lng']);
+        let markerPosition  = new kakao.maps.LatLng(coord['lat'], coord['lng']);
         
         let marker = new kakao.maps.Marker({
           position: markerPosition,
