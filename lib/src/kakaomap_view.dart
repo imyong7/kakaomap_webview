@@ -27,6 +27,10 @@ class KakaoMapView extends StatelessWidget {
   /// center longitude
   final double lng;
 
+  /// marker list
+  /// i.e) [{ 'lat': lat, 'lng': lng }]
+  final dynamic markerCoords;
+
   /// Kakao map key javascript key
   final String kakaoMapKey;
 
@@ -116,7 +120,9 @@ class KakaoMapView extends StatelessWidget {
       this.mapWidgetKey,
       this.draggableMarker = false,
       this.mapType,
-      this.mapController});
+      this.mapController,
+      this.markerCoords // marker data structure add
+    });
 
 
 
@@ -379,6 +385,22 @@ $overlayStyle
         strokeColor: ${polyline?.getStrokeColor},
         strokeOpacity: ${polyline?.strokeColorOpacity},
         strokeStyle: '${polyline?.strokeStyle.name}'
+      });
+    }
+    
+    // marker add
+    if(${markerCoords != null}) {
+      const coords = $markerCoords;
+       
+      coords.forEach((coord) => {
+        let markerPosition  = new kakao.maps.LatLng(coord['lat']}, coord['lng']);
+        
+        let marker = new kakao.maps.Marker({
+          position: markerPosition,
+          $markerImageOption
+        });
+        
+        marker.setMap(map);      
       });
     }
 	</script>
