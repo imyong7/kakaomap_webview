@@ -29,7 +29,7 @@ class KakaoMapView extends StatelessWidget {
 
   /// marker list
   /// i.e) [{ 'lat': lat, 'lng': lng }]
-  final String markerCoords;
+  final String? markerCoords;
 
   /// Kakao map key javascript key
   final String kakaoMapKey;
