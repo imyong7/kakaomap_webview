@@ -400,7 +400,11 @@ $overlayStyle
           $markerImageOption
         });
         
-        marker.setMap(map);      
+        marker.setMap(map);
+        
+        kakao.maps.event.addListener(marker, 'click', function(){
+          onTapMarker.postMessage(coord);
+        });
       });
     }
 	</script>
