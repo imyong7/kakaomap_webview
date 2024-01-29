@@ -278,27 +278,18 @@ $overlayStyle
 		  markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
 		}
 		
-		/*
-		const markerPosition  = new kakao.maps.LatLng($lat, $lng);
-      
-      const marker = new kakao.maps.Marker({
-        position: markerPosition,
-        $markerImageOption
-      });
-      
-      marker.setMap(map);
-		*/
+    const markerPosition  = new kakao.maps.LatLng($lat, $lng);
+    
+    const marker = new kakao.maps.Marker({
+      position: markerPosition,
+      $markerImageOption
+    });
+    
+    // marker.setMap(map);
 		
 		
 		if(${isVisibleCurrPositionMarker != null && isVisibleCurrPositionMarker!}) {
-      const markerPosition  = new kakao.maps.LatLng($lat, $lng);
-      
-      const marker = new kakao.maps.Marker({
-        position: markerPosition,
-        $markerImageOption
-      });
-      
-      marker.setMap(map);
+		  marker.setMap(map);
 		}
 		
     
