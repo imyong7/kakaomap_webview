@@ -31,6 +31,9 @@ class KakaoMapView extends StatelessWidget {
   /// i.e) { "list" : [{ 'lat': lat, 'lng': lng }] }
   final dynamic markerCoords;
 
+  /// show marker of current position
+  final bool? isVisibleCurrPositionMarker;
+
   /// Kakao map key javascript key
   final String kakaoMapKey;
 
@@ -121,7 +124,8 @@ class KakaoMapView extends StatelessWidget {
       this.draggableMarker = false,
       this.mapType,
       this.mapController,
-      this.markerCoords // marker data structure add
+      this.markerCoords, // marker data structure add
+      this.isVisibleCurrPositionMarker
     });
 
 
@@ -273,14 +277,30 @@ $overlayStyle
 		  let imageOption = {offset: new kakao.maps.Point(27, 69)}
 		  markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
 		}
-		const markerPosition  = new kakao.maps.LatLng($lat, $lng);
 		
-		const marker = new kakao.maps.Marker({
-      position: markerPosition,
-      $markerImageOption
-    });
-    
-    marker.setMap(map);
+		/*
+		const markerPosition  = new kakao.maps.LatLng($lat, $lng);
+      
+      const marker = new kakao.maps.Marker({
+        position: markerPosition,
+        $markerImageOption
+      });
+      
+      marker.setMap(map);
+		*/
+		
+		
+		if(${isVisibleCurrPositionMarker != null || isVisibleCurrPositionMarker!}) {
+      const markerPosition  = new kakao.maps.LatLng($lat, $lng);
+      
+      const marker = new kakao.maps.Marker({
+        position: markerPosition,
+        $markerImageOption
+      });
+      
+      marker.setMap(map);
+		}
+		
     
     if(${overlayText != null}){
       const content = '<div class ="label"><span class="left"></span><span class="center">$overlayText</span><span class="right"></span></div>';
