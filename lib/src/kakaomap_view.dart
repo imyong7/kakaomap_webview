@@ -290,7 +290,7 @@ $overlayStyle
 		*/
 		
 		
-		if(${isVisibleCurrPositionMarker != null || isVisibleCurrPositionMarker!}) {
+		if(${isVisibleCurrPositionMarker != null && isVisibleCurrPositionMarker!}) {
       const markerPosition  = new kakao.maps.LatLng($lat, $lng);
       
       const marker = new kakao.maps.Marker({
