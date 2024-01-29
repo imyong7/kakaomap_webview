@@ -98,7 +98,7 @@ class KakaoMapView extends StatelessWidget {
   /// example)
   /// mapController.evaluateJavascript('map.setLevel(map.getLevel() + 1, {animate: true})');
   // void Function(WebViewController)? mapController;
-  late final WebViewController mapController;
+  late final WebViewController? mapController;
 
   KakaoMapView(
       {required this.width,
